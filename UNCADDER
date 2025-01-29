@@ -151,3 +151,16 @@ function getcallbackvalue(callback)
     local success, result = pcall(callback)
     return success and result or nil
 end
+function getinstancevalue(instance, property)
+    local success, result = pcall(function()
+        return instance[property]
+    end)
+    return success and result or nil
+end
+
+function setinstancevalue(instance, property, value)
+    local success, result = pcall(function()
+        instance[property] = value
+    end)
+    return success and result or nil
+end
