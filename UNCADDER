@@ -115,15 +115,10 @@ function debug.setupvalue(func, index, value)
     return false
 end
 
-
 function getgenv()
     return _G
 end
 
-
-function setfenv(func, env)
-    return debug.setfenv(func, env)
-end
 
 function hookfunction(original, replacement)
     return debug.sethook(original, replacement)
