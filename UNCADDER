@@ -115,14 +115,6 @@ function debug.setupvalue(func, index, value)
     return false
 end
 
-function table.clone(tbl)
-    if type(tbl) ~= "table" then error("Expected a table") end
-    local copy = {}
-    for key, value in pairs(tbl) do
-        copy[key] = value
-    end
-    return copy
-end
 
 function getgenv()
     return _G
@@ -152,3 +144,6 @@ function isfunction(value)
     return type(value) == "function"
 end
 
+function islclosure(func)
+    return type(func) == "function" and pcall(debug.getinfo, func, "S")
+end
