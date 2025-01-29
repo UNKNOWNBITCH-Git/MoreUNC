@@ -152,6 +152,3 @@ function isfunction(value)
     return type(value) == "function"
 end
 
-function islclosure(func)
-    return type(func) == "function" and pcall(debug.getinfo, func, "S")
-end
