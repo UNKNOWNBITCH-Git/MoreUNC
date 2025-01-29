@@ -120,9 +120,6 @@ function getgenv()
     return _G
 end
 
-function getfenv(level)
-    return debug.getfenv(level or 2)
-end
 
 function setfenv(func, env)
     return debug.setfenv(func, env)
