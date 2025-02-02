@@ -112,13 +112,18 @@ function hookfunction(original, replacement)
     return original
 end
 
-function newcclosure(func)
-    return function(...) return func(...) end -- Ensuring it's treated as a "C" closure
+function isclosure(func)
+    return type(func) == "function" and not iscclosure(func)
 end
 
 function iscclosure(func)
-    return type(func) == "function" and not pcall(debug.getinfo, func, "S")
+    return type(func) == "function" and debug.getinfo(func).what == "C"
 end
+
+function isexecutorclosure(func)
+    return type(func) == "function" and not debug.getinfo(func).source:match("^@")
+end
+
 
 function isfunction(value)
     return type(value) == "function"
