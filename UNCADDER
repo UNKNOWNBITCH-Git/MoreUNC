@@ -77,14 +77,6 @@ function debug.setconstant(func, index, value)
     return true
 end
 
-function debug.setupvalue(func, index, value)
-    local upvalues = debug.getupvalues(func)
-    if upvalues[index] then
-        upvalues[index] = value
-        return true
-    end
-    return false
-end
 
 function getgenv()
     return _G
