@@ -70,17 +70,6 @@ function debug.getconstant(func, index)
     return constants[index]
 end
 
-function debug.getupvalues(func)
-    local found
-    setfenv(func, {print = function(value) found = value end})
-    func()
-    return { found }
-end
-
-function debug.getupvalue(func, num)
-    return debug.getupvalues(func)[num]
-end
-
 function debug.setconstant(func, index, value)
     local constants = debug.getconstant(func, index)
     if not constants then error("Constant not found at index " .. tostring(index)) end
