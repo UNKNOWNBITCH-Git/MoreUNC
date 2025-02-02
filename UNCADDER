@@ -26,15 +26,6 @@ setmetatable = function(tabl, meta)
     return object
 end
 
-function setreadonly(table)
-    -- Set the metatable to enforce read-only behavior
-    setmetatable(table, {
-        __newindex = function(_, key, value)
-            error("Attempt to modify a read-only table", 2)
-        end
-    })
-end
-
 
 function getrawmetatable(object)
     return metatables[object]
