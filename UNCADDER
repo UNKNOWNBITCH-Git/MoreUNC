@@ -1,4 +1,4 @@
--- WebSocket Mock
+d-- WebSocket Mock
 WebSocket = WebSocket or {}
 
 function WebSocket.connect(url)
@@ -26,7 +26,7 @@ setmetatable = function(tabl, meta)
     return object
 end
 
-function SetReadOnly(table)
+function setreadonly(table)
     -- Set the metatable to enforce read-only behavior
     setmetatable(table, {
         __newindex = function(_, key, value)
