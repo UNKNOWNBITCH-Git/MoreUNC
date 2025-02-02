@@ -130,8 +130,21 @@ function isfunction(value)
 end
 
 function islclosure(func)
-    return type(func) == "function" and pcall(debug.getinfo, func, "S")
+    -- Ensure func is a function
+    if type(func) ~= "function" then
+        return false
+    end
+    
+    -- Use pcall to safely call debug.getinfo and check if it’s a Lua closure
+    local status, info = pcall(debug.getinfo, func, "S")
+    if not status then
+        return false  -- If debug.getinfo fails, it's not a closure
+    end
+
+    -- Check if the function is local (Lua closure) based on the "what" field
+    return info.what == "Lua"
 end
+
 
 function getcallbackvalue(callback)
     if type(callback) ~= "function" then
