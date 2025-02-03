@@ -46,14 +46,30 @@ end
 
 
 
--- Hook Metamethods
-function hookmetamethod(obj, method, replacement)
-    local meta = getrawmetatable(obj)
-    if not meta then error("Object has no metatable") end
-    local original = meta[method]
-    meta[method] = replacement
+-- Function Hooks 
+local hooked_functions = {}
+
+function hookfunction(original, replacement)
+    if type(original) ~= "function" or type(replacement) ~= "function" then
+        error("Invalid arguments to hookfunction")
+    end
+    
+    -- Just hook by replacing the original with the replacement
+    hooked_functions[original] = replacement
+    
     return original
 end
+
+function call_hooked(original, ...)
+    local hooked = hooked_functions[original]
+    
+    if hooked then
+        return hooked(...)
+    else
+        return original(...)
+    end
+end
+
 
 -- Debug Functions
 function debug.getproto(func, index, mock)
@@ -96,52 +112,6 @@ function getgenv()
     return _G
 end
 
--- Function Hooks
-local hooked_functions = {}
-
--- Helper function to call the original function
-local function call_original(original, ...)
-    if hooked_functions[original] then
-        return hooked_functions[original].original(...)
-    else
-        return original(...)
-    end
-end
-
--- Function to hook the original function with a replacement
-function hookfunction(original, replacement)
-    if type(original) ~= "function" or type(replacement) ~= "function" then
-        error("Invalid arguments to hookfunction")
-    end
-    
-    -- Save the original function before hooking
-    if not hooked_functions[original] then
-        hooked_functions[original] = { original = original }
-    end
-    
-    -- Replace the original function with the new one
-    hooked_functions[original].hook = replacement
-    
-    -- Return the original function to allow unhooking
-    return original
-end
-
--- Function to unhook (restore) the original function
-function unhookfunction(original)
-    if hooked_functions[original] then
-        -- Restore the original function
-        hooked_functions[original] = nil
-    end
-end
-
--- Call the hooked function, falling back to original if not hooked
-function call_hooked(original, ...)
-    if hooked_functions[original] then
-        return hooked_functions[original].hook(...)
-    else
-        return original(...)
-    end
-end
 
 
 function isclosure(func)
