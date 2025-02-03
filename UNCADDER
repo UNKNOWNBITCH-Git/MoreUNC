@@ -44,6 +44,8 @@ function gethiddenproperty(obj, property)
     return hiddenProperties[obj] and hiddenProperties[obj][property] or nil
 end
 
+
+
 -- Hook Metamethods
 function hookmetamethod(obj, method, replacement)
     local meta = getrawmetatable(obj)
