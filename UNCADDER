@@ -45,32 +45,6 @@ function gethiddenproperty(obj, property)
 end
 
 
-
--- Function Hooks 
-local hooked_functions = {}
-
-function hookfunction(original, replacement)
-    if type(original) ~= "function" or type(replacement) ~= "function" then
-        error("Invalid arguments to hookfunction")
-    end
-    
-    -- Just hook by replacing the original with the replacement
-    hooked_functions[original] = replacement
-    
-    return original
-end
-
-function call_hooked(original, ...)
-    local hooked = hooked_functions[original]
-    
-    if hooked then
-        return hooked(...)
-    else
-        return original(...)
-    end
-end
-
-
 -- Debug Functions
 function debug.getproto(func, index, mock)
     return mock and { function() return true end } or function() return true end
