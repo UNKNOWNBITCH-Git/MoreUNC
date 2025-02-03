@@ -40,14 +40,6 @@ function setrawmetatable(obj, newmt)
     return obj
 end
 
--- Hidden Properties
-local hiddenProperties = {}
-function sethiddenproperty(obj, property, value)
-    hiddenProperties[obj] = hiddenProperties[obj] or {}
-    hiddenProperties[obj][property] = value
-    return true
-end
-
 function gethiddenproperty(obj, property)
     return hiddenProperties[obj] and hiddenProperties[obj][property] or nil
 end
