@@ -99,13 +99,50 @@ end
 -- Function Hooks
 local hooked_functions = {}
 
+-- Helper function to call the original function
+local function call_original(original, ...)
+    if hooked_functions[original] then
+        return hooked_functions[original].original(...)
+    else
+        return original(...)
+    end
+end
+
+-- Function to hook the original function with a replacement
 function hookfunction(original, replacement)
     if type(original) ~= "function" or type(replacement) ~= "function" then
         error("Invalid arguments to hookfunction")
     end
-    hooked_functions[original] = replacement
+    
+    -- Save the original function before hooking
+    if not hooked_functions[original] then
+        hooked_functions[original] = { original = original }
+    end
+    
+    -- Replace the original function with the new one
+    hooked_functions[original].hook = replacement
+    
+    -- Return the original function to allow unhooking
     return original
 end
+
+-- Function to unhook (restore) the original function
+function unhookfunction(original)
+    if hooked_functions[original] then
+        -- Restore the original function
+        hooked_functions[original] = nil
+    end
+end
+
+-- Call the hooked function, falling back to original if not hooked
+function call_hooked(original, ...)
+    if hooked_functions[original] then
+        return hooked_functions[original].hook(...)
+    else
+        return original(...)
+    end
+end
+
 
 function isclosure(func)
     return type(func) == "function" and not iscclosure(func)
